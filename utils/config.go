@@ -241,6 +241,7 @@ func getClientConfig(c *model.Config) map[string]string {
 	props["EnableEmailBatching"] = strconv.FormatBool(*c.EmailSettings.EnableEmailBatching)
 
 	props["EnableSignUpWithGitLab"] = strconv.FormatBool(c.GitLabSettings.Enable)
+	props["EnableSignUpWithEVE"] = strconv.FormatBool(c.EVESettings.Enable)
 
 	props["ShowEmailAddress"] = strconv.FormatBool(c.PrivacySettings.ShowEmailAddress)
 
@@ -354,6 +355,10 @@ func Desanitize(cfg *model.Config) {
 
 	if cfg.GitLabSettings.Secret == model.FAKE_SETTING {
 		cfg.GitLabSettings.Secret = Cfg.GitLabSettings.Secret
+	}
+
+	if cfg.EVESettings.Secret == model.FAKE_SETTING {
+		cfg.EVESettings.Secret = Cfg.EVESettings.Secret
 	}
 
 	if cfg.SqlSettings.DataSource == model.FAKE_SETTING {

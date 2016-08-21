@@ -256,6 +256,20 @@
                 }
             }
 
+            &.eve {
+                background: url('../images/eveSSO.png') no-repeat;
+                height:30px;
+                width:195px;
+
+                &:hover {
+                }
+
+                span {
+                    vertical-align: middle;
+                    display: none;
+                }
+            }
+
             &.office365 {
                 background: #0079d6;
 

@@ -13,7 +13,7 @@
         "EnablePostUsernameOverride": false,
         "EnablePostIconOverride": false,
         "EnableTesting": false,
-        "EnableDeveloper": false,
+        "EnableDeveloper": true,
         "EnableSecurityFixAlert": true,
         "EnableInsecureOutgoingConnections": false,
         "EnableMultifactorAuthentication": false,
@@ -142,6 +142,15 @@
         "AuthEndpoint": "",
         "TokenEndpoint": "",
         "UserApiEndpoint": ""
+    },
+    "EVESettings": {
+        "Enable": true,
+        "Secret": "AGXwvkjBWaWOdt2rbUgPMeJ7NT6rPxG45O7mkSv4",
+        "Id": "0d901a02b9fd4450950f94dc5fcee4f7",
+        "Scope": "",
+        "AuthEndpoint": "https://login.eveonline.com/oauth/authorize",
+        "TokenEndpoint": "https://login.eveonline.com/oauth/token",
+        "UserApiEndpoint": "https://login.eveonline.com/oauth/verify"
     },
     "GoogleSettings": {
         "Enable": false,

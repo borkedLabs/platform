@@ -360,7 +360,7 @@ func IsInRole(userRoles string, inRole string) bool {
 }
 
 func (u *User) IsOAuthUser() bool {
-	if u.AuthService == USER_AUTH_SERVICE_GITLAB {
+	if u.AuthService == USER_AUTH_SERVICE_GITLAB || u.AuthService == USER_AUTH_SERVICE_EVE {
 		return true
 	}
 	return false

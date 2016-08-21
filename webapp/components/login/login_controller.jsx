@@ -279,6 +279,7 @@ export default class LoginController extends React.Component {
     checkSignUpEnabled() {
         return global.window.mm_config.EnableSignUpWithEmail === 'true' ||
             global.window.mm_config.EnableSignUpWithGitLab === 'true' ||
+            global.window.mm_config.EnableSignUpWithEVE === 'true' ||
             global.window.mm_config.EnableSignUpWithGoogle === 'true';
     }
 
@@ -334,6 +335,7 @@ export default class LoginController extends React.Component {
         const ldapEnabled = this.state.ldapEnabled;
         const gitlabSigninEnabled = global.window.mm_config.EnableSignUpWithGitLab === 'true';
         const googleSigninEnabled = global.window.mm_config.EnableSignUpWithGoogle === 'true';
+        const eveSigninEnabled = 'true' === 'true';
         const office365SigninEnabled = global.window.mm_config.EnableSignUpWithOffice365 === 'true';
         const samlSigninEnabled = this.state.samlEnabled;
         const usernameSigninEnabled = this.state.usernameSigninEnabled;
@@ -436,7 +438,7 @@ export default class LoginController extends React.Component {
             );
         }
 
-        if ((emailSigninEnabled || usernameSigninEnabled || ldapEnabled) && (gitlabSigninEnabled || googleSigninEnabled || samlSigninEnabled || office365SigninEnabled)) {
+        if ((emailSigninEnabled || usernameSigninEnabled || ldapEnabled) && (gitlabSigninEnabled || googleSigninEnabled || eveSigninEnabled || samlSigninEnabled || office365SigninEnabled)) {
             loginControls.push(
                 <div
                     key='divider'
@@ -489,6 +491,24 @@ export default class LoginController extends React.Component {
                         <FormattedMessage
                             id='login.google'
                             defaultMessage='Google Apps'
+                        />
+                    </span>
+                </a>
+            );
+        }
+
+        if (eveSigninEnabled) {
+            loginControls.push(
+                <a
+                    className='btn btn-custom-login eve'
+                    key='eve'
+                    href={Client.getOAuthRoute() + '/eve/login' + this.props.location.search}
+                >
+                    <span className='icon'/>
+                    <span>
+                        <FormattedMessage
+                            id='login.eve'
+                            defaultMessage='EVE Online'
                         />
                     </span>
                 </a>

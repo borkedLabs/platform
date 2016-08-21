@@ -22,11 +22,13 @@ export default class OAuthSettings extends AdminSettings {
         this.renderOffice365 = this.renderOffice365.bind(this);
         this.renderGoogle = this.renderGoogle.bind(this);
         this.renderGitLab = this.renderGitLab.bind(this);
+        this.renderEVE = this.renderEVE.bind(this);
         this.changeType = this.changeType.bind(this);
     }
 
     getConfigFromState(config) {
         config.GitLabSettings.Enable = false;
+        config.EVESettings.Enable = false;
         config.GoogleSettings.Enable = false;
         config.Office365Settings.Enable = false;
 
@@ -37,6 +39,16 @@ export default class OAuthSettings extends AdminSettings {
             config.GitLabSettings.UserApiEndpoint = this.state.userApiEndpoint;
             config.GitLabSettings.AuthEndpoint = this.state.authEndpoint;
             config.GitLabSettings.TokenEndpoint = this.state.tokenEndpoint;
+        }
+
+        if (this.state.oauthType === Constants.EVE_SERVICE) {
+            config.EVESettings.Enable = true;
+            config.EVESettings.Id = this.state.id;
+            config.EVESettings.Secret = this.state.secret;
+            config.EVESettings.UserApiEndpoint = 'https://login.eveonline.com/oauth/verify';
+            config.EVESettings.AuthEndpoint = 'https://login.eveonline.com/oauth/authorize';
+            config.EVESettings.TokenEndpoint = 'https://login.eveonline.com/oauth/token';
+            config.EVESettings.Scope = '';
         }
 
         if (this.state.oauthType === Constants.GOOGLE_SERVICE) {
@@ -70,6 +82,9 @@ export default class OAuthSettings extends AdminSettings {
         if (config.GitLabSettings.Enable) {
             oauthType = Constants.GITLAB_SERVICE;
             settings = config.GitLabSettings;
+        } else if (config.EVESettings.Enable) {
+            oauthType = Constants.EVE_SERVICE;
+            settings = config.EVESettings;
         } else if (config.GoogleSettings.Enable) {
             oauthType = Constants.GOOGLE_SERVICE;
             settings = config.GoogleSettings;
@@ -96,6 +111,8 @@ export default class OAuthSettings extends AdminSettings {
             settings = this.config.GoogleSettings;
         } else if (value === Constants.OFFICE365_SERVICE) {
             settings = this.config.Office365Settings;
+        } else if (value === Constants.EVE_SERVICE) {
+            settings = this.config.EVESettings;
         }
 
         this.setState({
@@ -272,6 +289,71 @@ export default class OAuthSettings extends AdminSettings {
         );
     }
 
+    renderEVE() {
+        return (
+            <div>
+                <TextSetting
+                    id='id'
+                    label={
+                        <FormattedMessage
+                            id='admin.eve.clientIdTitle'
+                            defaultMessage='Application ID:'
+                        />
+                    }
+                    placeholder={Utils.localizeMessage('admin.eve.clientIdExample', 'Ex "adf3sfa2-ag3f-sn4n-ids0-sh1hdax192qq"')}
+                    helpText={
+                        <FormattedMessage
+                            id='admin.eve.clientIdDescription'
+                            defaultMessage='The Application/Client ID you received when registering your application with Microsoft.'
+                        />
+                    }
+                    value={this.state.id}
+                    onChange={this.handleChange}
+                />
+                <TextSetting
+                    id='secret'
+                    label={
+                        <FormattedMessage
+                            id='admin.eve.clientSecretTitle'
+                            defaultMessage='Application Secret Password:'
+                        />
+                    }
+                    placeholder={Utils.localizeMessage('admin.eve.clientSecretExample', 'Ex "shAieM47sNBfgl20f8ci294"')}
+                    helpText={
+                        <FormattedMessage
+                            id='admin.eve.clientSecretDescription'
+                            defaultMessage='The Application Secret Password you generated when registering your application with Microsoft.'
+                        />
+                    }
+                    value={this.state.secret}
+                    onChange={this.handleChange}
+                />
+                <TextSetting
+                    id='authEndpoint'
+                    label={
+                        <FormattedMessage
+                            id='admin.eve.authTitle'
+                            defaultMessage='Auth Endpoint:'
+                        />
+                    }
+                    value='https://login.eveonline.com/oauth/authorize'
+                    disabled={true}
+                />
+                <TextSetting
+                    id='tokenEndpoint'
+                    label={
+                        <FormattedMessage
+                            id='admin.eve.tokenTitle'
+                            defaultMessage='Token Endpoint:'
+                        />
+                    }
+                    value='https://login.eveonline.com/oauth/token'
+                    disabled={true}
+                />
+            </div>
+        );
+    }
+
     renderGitLab() {
         return (
             <div>
@@ -380,6 +462,14 @@ export default class OAuthSettings extends AdminSettings {
                     defaultMessage='<ol><li>Log in to your GitLab account and go to Profile Settings -> Applications.</li><li>Enter Redirect URIs "<your-mattermost-url>/login/gitlab/complete" (example: http://localhost:8065/login/gitlab/complete) and "<your-mattermost-url>/signup/gitlab/complete". </li><li>Then use "Application Secret Key" and "Application ID" fields from GitLab to complete the options below.</li><li>Complete the Endpoint URLs below. </li></ol>'
                 />
             );
+        } else if (this.state.oauthType === Constants.EVE_SERVICE) {
+            contents = this.renderEVE();
+            helpText = (
+                <FormattedHTMLMessage
+                    id='admin.gitlab.EnableHtmlDesc'
+                    defaultMessage=''
+                />
+            );
         } else if (this.state.oauthType === Constants.GOOGLE_SERVICE) {
             contents = this.renderGoogle();
             helpText = (
@@ -401,6 +491,7 @@ export default class OAuthSettings extends AdminSettings {
         const oauthTypes = [];
         oauthTypes.push({value: 'off', text: Utils.localizeMessage('admin.oauth.off', 'Do not allow sign-in via an OAuth 2.0 provider.')});
         oauthTypes.push({value: Constants.GITLAB_SERVICE, text: Utils.localizeMessage('admin.oauth.gitlab', 'GitLab')});
+        oauthTypes.push({value: Constants.EVE_SERVICE, text: Utils.localizeMessage('admin.oauth.eve', 'EVE')});
         if (global.window.mm_license.IsLicensed === 'true') {
             if (global.window.mm_license.GoogleOAuth === 'true') {
                 oauthTypes.push({value: Constants.GOOGLE_SERVICE, text: Utils.localizeMessage('admin.oauth.google', 'Google Apps')});

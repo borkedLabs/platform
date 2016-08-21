@@ -487,6 +487,7 @@
   "admin.notifications.push": "Mobile Push",
   "admin.notifications.title": "Notification Settings",
   "admin.oauth.gitlab": "GitLab",
+  "admin.oauth.eve": "EVE",
   "admin.oauth.google": "Google Apps",
   "admin.oauth.off": "Do not allow sign-in via an OAuth 2.0 provider",
   "admin.oauth.office365": "Office 365 (Beta)",
